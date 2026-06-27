@@ -1,0 +1,5 @@
+# Core ranking step — CPU-only, no network at rank time.
+numpy>=1.24,<3
+scipy>=1.10
+scikit-learn>=1.3
+PyYAML>=6.0

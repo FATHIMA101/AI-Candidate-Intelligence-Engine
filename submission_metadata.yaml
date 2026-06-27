@@ -1,0 +1,82 @@
+# Redrob Hackathon — Submission Metadata
+# Fill in the team-identity, repo and sandbox fields marked TODO before
+# submitting through the portal. Everything else reflects the actual project.
+
+# ============================================================================
+# Team identity
+# ============================================================================
+team_name: "Catalyst"
+
+primary_contact:
+  name: "Fathima M"
+  email: "fathimakabeerm101@gmail.com"
+  phone: "+91-9961052726"
+
+
+# ============================================================================
+# Code and reproducibility
+# ============================================================================
+github_repo: "https://github.com/TODO_USERNAME/redrob-ranker"
+sandbox_link: "https://huggingface.co/spaces/TODO_USERNAME/redrob-ranker"
+reproduce_command: "python rank.py --candidates ./candidates.jsonl --out ./submission.csv"
+
+# ============================================================================
+# Compute environment
+# ============================================================================
+# Numbers below describe the target reference machine the ranker is built for.
+# Update platform/os/python_version to match the machine you actually run on.
+compute:
+  platform: "Local Linux box"
+  cpu_cores: 8
+  ram_gb: 16
+  python_version: "3.11"
+  os: "Ubuntu 22.04 LTS"
+  uses_gpu_for_inference: false
+  has_network_during_ranking: false
+  pre_computation_required: false   # core ranker needs no precompute; dense layer is optional
+  pre_computation_time_minutes: 0   # only non-zero if you enable the optional dense embeddings
+
+# ============================================================================
+# AI tools declaration
+# ============================================================================
+ai_tools_used:
+  - "Claude"
+
+ai_usage_summary: |
+  Used Claude for architectural discussion, code review, and drafting. All
+  design decisions,building, the scoring weights, and the honeypot logic were chosen and
+  verified by the team against the challenge spec and the real candidate pool.
+  No candidate data was fed to any hosted LLM, and the ranker itself makes no
+  network or LLM calls at rank time.
+
+# ============================================================================
+# Approach summary
+# ============================================================================
+methodology_summary: |
+  An explainable multi-stage ranker with a JD-driven front end. A transparent,
+  rule-based reader parses the job description and derives the component
+  weights, experience band, semantic query, and active disqualifiers — bounded
+  around hand-tuned priors so a lopsided JD can shift emphasis but not produce a
+  degenerate ranking. No LLM or network is used, so it adds nothing to compute.
+  Each profile is then streamed once and reduced to interpretable features. The
+  score is an additive, JD-weighted blend of five components — title-and-career
+  fit, skill trust, semantic similarity, experience band, and location — then
+  multiplied by a disqualifier penalty and a behavioural modifier. Skill trust
+  tempers each claimed proficiency by endorsements, duration, and description
+  mentions, so an unsupported "expert" tag collapses toward zero; this defeats
+  keyword stuffing. Semantic similarity blends TF-IDF cosine with BM25 locally.
+  A separate honeypot gate forces profiles with internal impossibilities to the
+  bottom, tuned for precision. An optional local dense-embedding layer enhances
+  ranking when present and degrades gracefully otherwise. Reasoning text is
+  assembled from each candidate's own facts. Ranking runs CPU-only, no network,
+  within the five-minute budget.
+
+# ============================================================================
+# Declarations
+# ============================================================================
+declarations:
+  read_submission_spec: true
+  code_is_original_work: true
+  no_collusion: true
+  honeypot_check_done: true
+  reproduction_tested: true

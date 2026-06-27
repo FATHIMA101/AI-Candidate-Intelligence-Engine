@@ -1,0 +1,4 @@
+# OPTIONAL dense-embedding enhancement (used by precompute.py).
+# Not required for the core ranker; rank.py degrades to lexical-only if absent.
+sentence-transformers>=2.2
+torch>=2.0          # CPU build is fine
