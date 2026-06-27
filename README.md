@@ -1,4 +1,4 @@
-Candidate Intelligence Ranking Engine
+##Candidate Intelligence Ranking Engine
 
 An explainable, multi-stage system that reads a pool of 100,000 candidate
 profiles and returns the 100 best-fit candidates for the "Senior AI Engineer —
